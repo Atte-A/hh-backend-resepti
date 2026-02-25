@@ -1,10 +1,15 @@
 package com.resepti.resepti.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,11 +29,14 @@ public class Resepti {
   @Column(name = "ohje", nullable = false)
   private String ohje;
 
-  @Column(name = "valmistuaika")
+  @Column(name = "valmistusaika")
   private Integer valmistusaika;
 
   @Column(name = "annosmaara")
   private Integer annosmaara;
+
+  @OneToMany(mappedBy = "resepti", cascade = CascadeType.ALL)
+  private List<ReseptiAines> ainekset = new ArrayList<>();
 
   public Resepti() {}
 
