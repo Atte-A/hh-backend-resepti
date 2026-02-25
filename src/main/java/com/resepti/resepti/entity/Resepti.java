@@ -36,6 +36,9 @@ public class Resepti {
   private Integer annosmaara;
 
   @OneToMany(mappedBy = "resepti", cascade = CascadeType.ALL)
+  private List<ReseptiKategoria> kategoriat = new ArrayList<>();
+
+  @OneToMany(mappedBy = "resepti", cascade = CascadeType.ALL)
   private List<ReseptiAines> ainekset = new ArrayList<>();
 
   public Resepti() {}
