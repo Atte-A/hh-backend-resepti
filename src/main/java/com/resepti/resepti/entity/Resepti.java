@@ -61,6 +61,16 @@ public class Resepti {
     this.annosmaara = annosmaara;
   }
 
+  public void addTag(Tag tag) {
+    this.tags.add(tag);
+    tag.getReseptit().add(this);
+  }
+
+  public void removeTag(Tag tag) {
+    this.tags.remove(tag);
+    tag.getReseptit().remove(this);
+  }
+
   public Long getReseptiId() {
     return reseptiId;
   }
