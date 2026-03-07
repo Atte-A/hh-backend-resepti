@@ -6,8 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.resepti.resepti.entity.Ainesosa;
+import com.resepti.resepti.entity.Kategoria;
 import com.resepti.resepti.entity.Resepti;
 import com.resepti.resepti.repository.AinesosaRepo;
+import com.resepti.resepti.repository.KategoriaRepo;
 import com.resepti.resepti.repository.ReseptiRepo;
 
 @SpringBootApplication
@@ -18,7 +20,7 @@ public class ReseptiApplication {
 	}
 
   @Bean
-  CommandLineRunner demo(ReseptiRepo reseptiRepo, AinesosaRepo ainesosaRepo) {
+  CommandLineRunner demo(ReseptiRepo reseptiRepo, AinesosaRepo ainesosaRepo, KategoriaRepo kategoriaRepo) {
     return (args) -> {
       // Reseptit
       reseptiRepo.save(new Resepti("Pasta Carbonara", "Herkullinen arjen pelasta", "1. Keitä pasta, 2. Tee kastike", 85, 4));
@@ -36,6 +38,16 @@ public class ReseptiApplication {
       ainesosaRepo.save(new Ainesosa("pippuri"));
       ainesosaRepo.save(new Ainesosa("suola"));
       ainesosaRepo.save(new Ainesosa("parmesaani"));
+
+      // Kategoriat
+      kategoriaRepo.save(new Kategoria("Alkuruoka"));
+      kategoriaRepo.save(new Kategoria("Pääruoka"));
+      kategoriaRepo.save(new Kategoria("Jälkiruoka"));
+      kategoriaRepo.save(new Kategoria("Välipala"));
+      kategoriaRepo.save(new Kategoria("Aamupala"));
+      kategoriaRepo.save(new Kategoria("Iltapala"));
+      kategoriaRepo.save(new Kategoria("Juoma"));
+      kategoriaRepo.save(new Kategoria("Smoothie"));
     };
   }
 

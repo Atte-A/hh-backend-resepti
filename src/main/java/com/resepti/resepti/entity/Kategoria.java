@@ -1,7 +1,7 @@
 package com.resepti.resepti.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,17 +23,14 @@ public class Kategoria {
   @Column(name = "nimi")
   private String nimi;
 
-  @Column(name = "kuvaus")
-  private String kuvaus;
 
   @OneToMany(mappedBy = "kategoria")
-  private List<ReseptiKategoria> reseptit = new ArrayList<>();
+  private Set<ReseptiKategoria> reseptit = new HashSet<>();
 
   public Kategoria() {}
 
-  public Kategoria(String nimi, String kuvaus) {
+  public Kategoria(String nimi) {
     this.nimi = nimi;
-    this.kuvaus = kuvaus;
   }
 
   public Long getKategoriaId() {
@@ -52,17 +49,10 @@ public class Kategoria {
     this.nimi = nimi;
   }
 
-  public String getKuvaus() {
-    return kuvaus;
-  }
-
-  public void setKuvaus(String kuvaus) {
-    this.kuvaus = kuvaus;
-  }
 
   @Override
   public String toString() {
-    return "Kategoria [kategoriaId=" + kategoriaId + ", nimi=" + nimi + ", kuvaus=" + kuvaus + "]";
+    return "Kategoria [kategoriaId=" + kategoriaId + ", nimi=" + nimi + "]";
   }
 
 }
