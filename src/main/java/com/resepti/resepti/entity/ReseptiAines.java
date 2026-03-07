@@ -80,4 +80,10 @@ public class ReseptiAines {
     this.yksikko = yksikko;
   }
 
+  @Override
+  public String toString() {
+    return "ReseptiAinesosa [reseptiAinesId=" + reseptiAinesId + ", resepti=" + resepti + ", ainesosa=" + ainesosa
+        + ", maara=" + maara + ", yksikko=" + yksikko + "]";
+  }
+
 }

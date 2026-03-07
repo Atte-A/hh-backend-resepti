@@ -10,6 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "kategoria")
@@ -20,6 +22,8 @@ public class Kategoria {
   @Column(name = "kategoria_id")
   private Long kategoriaId;
 
+  @NotBlank(message = "Nimi on pakollinen")
+  @Size(max = 50, message = "Nimi ei saa olla yli 50 merkkiä")
   @Column(name = "nimi")
   private String nimi;
 
