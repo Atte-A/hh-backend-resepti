@@ -16,6 +16,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -40,11 +42,11 @@ public class Resepti {
   @Column(name = "ohje", nullable = false)
   private String ohje;
 
-  @Size(max = 1440, message = "Valmistusaika ei saa ylittää 24 tuntia")
+  @Max(value = 1440, message = "Valmistusaika ei saa ylittää 24 tuntia")
   @Column(name = "valmistusaika")
   private Integer valmistusaika;
 
-  @Size(min = 1, message = "Lisää annosmääräksi vähintään 1 annos")
+  @Min(value = 1, message = "Lisää annosmääräksi vähintään 1 annos")
   @Column(name = "annosmaara")
   private Integer annosmaara;
 
