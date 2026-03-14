@@ -16,13 +16,15 @@ import com.resepti.resepti.repository.ReseptiRepo;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
-@RequestMapping("/resepti-ainekset")
+@RequestMapping("/reseptit/{reseptiId}/ainesosat")
 public class ReseptiAinesController {
 
   private final ReseptiAinesRepo reseptiAinesosaRepo;
@@ -37,8 +39,9 @@ public class ReseptiAinesController {
   }
 
   // Hakee tietyn reseptin ainekset
-  @GetMapping("/{reseptiId}")
+  @GetMapping
   public List<ReseptiAines> haeAinekset(@PathVariable Long reseptiId) {
+
     Resepti resepti = reseptiRepo.findById(reseptiId)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
             "Reseptiä ei löytynyt resepti_id:llä " + reseptiId));
@@ -49,21 +52,43 @@ public class ReseptiAinesController {
   // Lisää tietyn ainesosan tiettyyn reseptiin
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ReseptiAines lisaaReseptiAines(@RequestBody ReseptiAinesDTO request) {
-
-    Long reseptiId = request.getReseptiId();
-    Long ainesosaId = request.getAinesosaId();
+  public ReseptiAines lisaaReseptiAines(@PathVariable Long reseptiId, @RequestBody ReseptiAinesDTO request) {
 
     Resepti resepti = reseptiRepo.findById(reseptiId)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
             "Reseptiä ei löytynyt resepti_id:llä " + reseptiId));
-    Ainesosa ainesosa = ainesosaRepo.findById(ainesosaId)
+    Ainesosa ainesosa = ainesosaRepo.findById(request.getAinesosaId())
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-            "Ainesosaa ei löytynyt ainesosa_id:llä " + ainesosaId));
+            "Ainesosaa ei löytynyt ainesosa_id:llä " + request.getAinesosaId()));
 
     ReseptiAines uusi = new ReseptiAines(resepti, ainesosa, request.getMaara(), request.getYksikko());
 
     return reseptiAinesosaRepo.save(uusi);
+  }
+
+  // Muokkaa tietyn reseptin tiettyä ainesosaa
+  @PutMapping("/{ainesosaId}")
+  public ReseptiAines muokkaaReseptiAines(@PathVariable Long reseptiId, @PathVariable Long ainesosaId,
+      @RequestBody ReseptiAinesDTO request) {
+
+    ReseptiAines muokattava = reseptiAinesosaRepo
+        .findByResepti_ReseptiIdAndAinesosa_AinesosaId(reseptiId, ainesosaId)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"ReseptiAinesta ei löytynyt"));
+
+    muokattava.setMaara(request.getMaara());
+    muokattava.setYksikko(request.getYksikko());
+
+    return reseptiAinesosaRepo.save(muokattava);
+  }
+
+  // Poistaa tietyn ainesosan tietystä reseptistä
+  @DeleteMapping("/{ainesosaId}")
+  public void poistaReseptiAines(@PathVariable Long reseptiId, @PathVariable Long ainesosaId) {
+    
+    ReseptiAines poistettava = reseptiAinesosaRepo.findByResepti_ReseptiIdAndAinesosa_AinesosaId(reseptiId, ainesosaId)
+    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ReseptiAinesta ei löytynyt"));
+    
+    reseptiAinesosaRepo.delete(poistettava);
   }
 
 }
