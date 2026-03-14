@@ -1,5 +1,6 @@
 package com.resepti.resepti;
 
+import com.resepti.resepti.repository.ReseptiAinesRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import com.resepti.resepti.entity.Ainesosa;
 import com.resepti.resepti.entity.Kategoria;
 import com.resepti.resepti.entity.Resepti;
+import com.resepti.resepti.entity.ReseptiAines;
 import com.resepti.resepti.repository.AinesosaRepo;
 import com.resepti.resepti.repository.KategoriaRepo;
 import com.resepti.resepti.repository.ReseptiRepo;
@@ -15,7 +17,13 @@ import com.resepti.resepti.repository.ReseptiRepo;
 @SpringBootApplication
 public class ReseptiApplication {
 
-	public static void main(String[] args) {
+	private final ReseptiAinesRepo reseptiAinesRepo;
+
+  ReseptiApplication(ReseptiAinesRepo reseptiAinesRepo) {
+    this.reseptiAinesRepo = reseptiAinesRepo;
+  }
+
+  public static void main(String[] args) {
 		SpringApplication.run(ReseptiApplication.class, args);
 	}
 
@@ -23,13 +31,13 @@ public class ReseptiApplication {
   CommandLineRunner demo(ReseptiRepo reseptiRepo, AinesosaRepo ainesosaRepo, KategoriaRepo kategoriaRepo) {
     return (args) -> {
       // Reseptit
-      reseptiRepo.save(new Resepti("Pasta Carbonara", "Herkullinen arjen pelasta", "1. Keitä pasta, 2. Tee kastike", 85, 4));
+      Resepti pastaCarbonara = reseptiRepo.save(new Resepti("Pasta Carbonara", "Herkullinen arjen pelasta", "1. Keitä pasta, 2. Tee kastike", 85, 4));
       reseptiRepo.save(new Resepti("Pannukakku", "Maailman herkullisin pannari", "1. Sekoita kuiva aineet, 2. Lisää maito ja kananmunat", 45,5));
 
       // Ainesosat
-      ainesosaRepo.save(new Ainesosa("paprika"));
-      ainesosaRepo.save(new Ainesosa("pekoni"));
-      ainesosaRepo.save(new Ainesosa("pasta"));
+      Ainesosa paprika = ainesosaRepo.save(new Ainesosa("paprika"));
+      Ainesosa pekoni = ainesosaRepo.save(new Ainesosa("pekoni"));
+      Ainesosa pasta = ainesosaRepo.save(new Ainesosa("pasta"));
       ainesosaRepo.save(new Ainesosa("tomaattimurska"));
       ainesosaRepo.save(new Ainesosa("sipuli"));
       ainesosaRepo.save(new Ainesosa("valkosipuli"));
@@ -38,6 +46,11 @@ public class ReseptiApplication {
       ainesosaRepo.save(new Ainesosa("pippuri"));
       ainesosaRepo.save(new Ainesosa("suola"));
       ainesosaRepo.save(new Ainesosa("parmesaani"));
+
+      // Resepti-ainesosa (määrä ja yksikkö)
+      reseptiAinesRepo.save(new ReseptiAines(pastaCarbonara, pasta, 1, "pkt"));
+      reseptiAinesRepo.save(new ReseptiAines(pastaCarbonara, pekoni, 200, "g"));
+      reseptiAinesRepo.save(new ReseptiAines(pastaCarbonara, paprika, 1, "kpl"));
 
       // Kategoriat
       kategoriaRepo.save(new Kategoria("Alkuruoka"));

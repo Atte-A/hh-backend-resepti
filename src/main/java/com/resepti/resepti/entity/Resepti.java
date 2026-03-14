@@ -53,7 +53,7 @@ public class Resepti {
   @OneToMany(mappedBy = "resepti", cascade = CascadeType.ALL)
   private List<ReseptiKategoria> kategoriat = new ArrayList<>();
 
-  @OneToMany(mappedBy = "resepti", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "resepti", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ReseptiAines> ainekset = new ArrayList<>();
 
   @ManyToMany
