@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
-@RequestMapping("/reseptit/{reseptiId}/ainesosat")
+@RequestMapping("/api/reseptit/{reseptiId}/ainesosat")
 public class ReseptiAinesController {
 
   private final ReseptiAinesRepo reseptiAinesosaRepo;
