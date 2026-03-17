@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<h1>Reseptit</h1>
+
+<ul>
+  <li th:each="resepti : ${reseptit}">
+    <a th:href="@{/reseptit/{id}(id=${resepti.reseptiId})}"
+       th:text="${resepti.nimi}">
+    </a>
+  </li>
+</ul>
+
+</body>
+</html>

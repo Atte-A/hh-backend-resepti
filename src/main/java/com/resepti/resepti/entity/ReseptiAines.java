@@ -85,8 +85,9 @@ public class ReseptiAines {
 
   @Override
   public String toString() {
-    return "ReseptiAinesosa [reseptiAinesId=" + reseptiAinesId + ", resepti=" + resepti + ", ainesosa=" + ainesosa
-        + ", maara=" + maara + ", yksikko=" + yksikko + "]";
+    return "ReseptiAinesosa [reseptiAinesId=" + reseptiAinesId +
+          ", maara=" + maara +
+          ", yksikko=" + yksikko + "]";
   }
 
 }

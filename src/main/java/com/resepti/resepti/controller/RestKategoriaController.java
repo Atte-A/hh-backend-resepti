@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/kategoriat")
-public class KategoriaController {
+@RequestMapping("/api/kategoriat")
+public class RestKategoriaController {
 
   private final KategoriaRepo kategoriaRepo;
 
-  public KategoriaController(KategoriaRepo kategoriaRepo) {
+  public RestKategoriaController(KategoriaRepo kategoriaRepo) {
     this.kategoriaRepo = kategoriaRepo;
   }
 

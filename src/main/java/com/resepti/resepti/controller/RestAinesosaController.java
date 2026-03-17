@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/ainesosat")
-public class AinesosaController {
+@RequestMapping("/api/ainesosat")
+public class RestAinesosaController {
 
   private final AinesosaRepo ainesosaRepo;
 
-  public AinesosaController(AinesosaRepo ainesosaRepo) {
+  public RestAinesosaController(AinesosaRepo ainesosaRepo) {
     this.ainesosaRepo = ainesosaRepo;
   }
 

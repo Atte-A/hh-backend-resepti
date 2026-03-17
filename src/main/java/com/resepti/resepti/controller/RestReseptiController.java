@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/reseptit")
-public class ReseptiController {
+@RequestMapping("/api/reseptit")
+public class RestReseptiController {
 
   private final ReseptiRepo reseptiRepo;
 
-  public ReseptiController(ReseptiRepo reseptiRepo) {
+  public RestReseptiController(ReseptiRepo reseptiRepo) {
     this.reseptiRepo = reseptiRepo;
   }
 

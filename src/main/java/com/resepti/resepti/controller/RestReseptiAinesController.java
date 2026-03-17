@@ -25,13 +25,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/reseptit/{reseptiId}/ainesosat")
-public class ReseptiAinesController {
+public class RestReseptiAinesController {
 
   private final ReseptiAinesRepo reseptiAinesosaRepo;
   private final ReseptiRepo reseptiRepo;
   private final AinesosaRepo ainesosaRepo;
 
-  public ReseptiAinesController(ReseptiAinesRepo reseptiAinesosaRepo, ReseptiRepo reseptiRepo,
+  public RestReseptiAinesController(ReseptiAinesRepo reseptiAinesosaRepo, ReseptiRepo reseptiRepo,
       AinesosaRepo ainesosaRepo) {
     this.reseptiAinesosaRepo = reseptiAinesosaRepo;
     this.reseptiRepo = reseptiRepo;

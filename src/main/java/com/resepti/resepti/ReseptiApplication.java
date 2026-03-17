@@ -31,8 +31,8 @@ public class ReseptiApplication {
   CommandLineRunner demo(ReseptiRepo reseptiRepo, AinesosaRepo ainesosaRepo, KategoriaRepo kategoriaRepo) {
     return (args) -> {
       // Reseptit
-      Resepti pastaCarbonara = reseptiRepo.save(new Resepti("Pasta Carbonara", "Herkullinen arjen pelasta", "1. Keitä pasta, 2. Tee kastike", 85, 4));
-      reseptiRepo.save(new Resepti("Pannukakku", "Maailman herkullisin pannari", "1. Sekoita kuiva aineet, 2. Lisää maito ja kananmunat", 45,5));
+      Resepti pastaCarbonara = reseptiRepo.save(new Resepti("Pasta Carbonara", "Herkullinen arjen pelastaja", "Laita pastavesi kiehumaan;Pilko sipuli, valkosipuli ja lisää ne kuumaan pannuun;Ruskista jauheliha;Lisää mausteet;Anna kastikkeen hautua niin kauan kunnes pasta on kypsää;Koristele tuoreilla yrteillä ja raasta päälle parmesaania", 85, 4));
+      reseptiRepo.save(new Resepti("Pannukakku", "Maailman herkullisin pannari", "Sekoita kuivat ainekset;Lisää maito, kananmunat ja sekoita huolellisesti;Kaada taikina uunipellille;Laita 200 asteiseen uuniin 45 minuutiksi", 60,5));
 
       // Ainesosat
       Ainesosa paprika = ainesosaRepo.save(new Ainesosa("paprika"));
