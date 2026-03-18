@@ -8,6 +8,6 @@ import com.resepti.resepti.entity.Kayttaja;
 
 public interface KayttajaRepo extends JpaRepository<Kayttaja, Long> {
 
-  Optional<Kayttaja> findByUsername(String kayttajatunnus);
+  Optional<Kayttaja> findByKayttajatunnus(String kayttajatunnus);
 
 }

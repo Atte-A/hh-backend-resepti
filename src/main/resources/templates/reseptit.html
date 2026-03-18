@@ -1,16 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Reseptit</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
 <body>
+  <div class="container mt-5">
+    <form th:action="@{/logout}" method="post" class="mb-3">
+    
+    <input type="hidden" th:name="${_csrf.parameterName}" 
+           th:value="${_csrf.token}" />
 
-<h1>Reseptit</h1>
+    <button type="submit" class="btn btn-danger">Kirjaudu ulos</button>
 
-<ul>
-  <li th:each="resepti : ${reseptit}">
-    <a th:href="@{/reseptit/{id}(id=${resepti.reseptiId})}"
-       th:text="${resepti.nimi}">
-    </a>
-  </li>
-</ul>
+</form>
 
+    <h1 class="mb-4">Reseptit</h1>
+
+    <div class="list-group">
+      <a th:each="resepti : ${reseptit}" th:href="@{/reseptit/{id}(id=${resepti.reseptiId})}" th:text="${resepti.nimi}"
+        class="list-group-item list-group-item-action">
+      </a>
+
+    </div>
+  </div>
 </body>
 </html>

@@ -1,40 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
+<head>
+    <title th:text="${resepti.nimi}"></title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
 <body>
 
-  <h1 th:text="${resepti.nimi}"></h1>
+<div class="container mt-5">
+  <form th:action="@{/logout}" method="post" class="mb-3">
+    <input type="hidden" th:name="${_csrf.parameterName}" 
+           th:value="${_csrf.token}" />
 
-  <p th:if="${resepti.annosmaara != null}" th:text="|${resepti.annosmaara} annosta|"></p>
+    <button type="submit" class="btn btn-danger">Kirjaudu ulos</button>
 
-  <p th:if="${resepti.valmistusaika != null}">
-    <span th:if="${resepti.valmistusaika <= 60}" th:text="|${resepti.valmistusaika} min|">
-    </span>
-    <span th:if="${resepti.valmistusaika > 60}"
-      th:text="|${resepti.valmistusaika / 60}h ${resepti.valmistusaika % 60}min|">
-    </span>
-  </p>
-  <p th:text="${resepti.kuvaus}"></p>
+</form>
 
-  <h2>Ainekset</h2>
+    <h1 class="mb-3" th:text="${resepti.nimi}"></h1>
 
-  <ul>
-    <li th:each="aines : ${resepti.ainekset}">
-      <span th:text="${aines.maara % 1 == 0 ? aines.maara.intValue() : aines.maara}"></span>
-      <span th:text="${aines.yksikko}"></span>
-      <span th:text="${aines.ainesosa.nimi}"></span>
-    </li>
-  </ul>
+    <div class="mb-3 text-muted">
+        <p th:if="${resepti.annosmaara != null}"
+           th:text="|${resepti.annosmaara} annosta|">
+        </p>
+        <p th:if="${resepti.valmistusaika != null}">
+            <span th:if="${resepti.valmistusaika <= 60}"
+                  th:text="|${resepti.valmistusaika} min|">
+            </span>
+            <span th:if="${resepti.valmistusaika > 60}"
+                  th:text="|${resepti.valmistusaika / 60}h ${resepti.valmistusaika % 60}min|">
+            </span>
+        </p>
 
-<h2>Ohje</h2>
-<ol>
-  <li th:each="rivi : ${#strings.arraySplit(resepti.ohje, ';')}"
-      th:text="${rivi}">
-  </li>
-</ol>
+    </div>
+    <p class="lead" th:text="${resepti.kuvaus}"></p>
 
-  <a href="/reseptit">Takaisin</a>
+    <h2 class="mt-4">Ainekset</h2>
 
+    <ul class="list-group mb-4">
+        <li class="list-group-item"
+            th:each="aines : ${resepti.ainekset}">
+
+            <span th:text="${aines.maara % 1 == 0 ? aines.maara.intValue() : aines.maara}"></span>
+            <span th:text="${aines.yksikko}"></span>
+            <span th:text="${aines.ainesosa.nimi}"></span>
+
+        </li>
+    </ul>
+
+    <h2>Ohje</h2>
+
+    <ol class="list-group list-group-numbered mb-4">
+        <li class="list-group-item"
+            th:each="rivi : ${#strings.arraySplit(resepti.ohje, ';')}"
+            th:text="${rivi}">
+        </li>
+    </ol>
+
+    <a href="/reseptit" class="btn btn-secondary">
+        Takaisin
+    </a>
+</div>
 </body>
-
 </html>
