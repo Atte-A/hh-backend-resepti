@@ -19,6 +19,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -42,10 +43,12 @@ public class Resepti {
   @Column(name = "ohje", nullable = false)
   private String ohje;
 
+  @NotNull(message = "Valmistusaika on pakollinen")
   @Max(value = 1440, message = "Valmistusaika ei saa ylittää 24 tuntia")
   @Column(name = "valmistusaika")
   private Integer valmistusaika;
 
+  @NotNull(message = "Annosmäärä on pakollinen")
   @Min(value = 1, message = "Lisää annosmääräksi vähintään 1 annos")
   @Column(name = "annosmaara")
   private Integer annosmaara;

@@ -2,6 +2,7 @@ package com.resepti.resepti.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -67,11 +68,11 @@ public class ReseptiAines {
     this.ainesosa = ainesosa;
   }
 
-  public double getMaara() {
+  public Double getMaara() {
     return maara;
   }
 
-  public void setMaara(double maara) {
+  public void setMaara(Double maara) {
     this.maara = maara;
   }
 
