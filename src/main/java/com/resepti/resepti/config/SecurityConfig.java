@@ -20,6 +20,7 @@ public class SecurityConfig  {
 		http
 			.authorizeHttpRequests( authorize -> authorize
 				.requestMatchers("/","/login", "/css/**").permitAll()
+        .requestMatchers("/resepti/muokkaa/**", "/resepti/poista/**").hasRole("ADMIN")
 				.anyRequest().authenticated()                 
 			)                                       
 		.formLogin( formlogin -> formlogin
