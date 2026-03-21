@@ -19,12 +19,10 @@ import com.resepti.resepti.repository.ReseptiRepo;
 @SpringBootApplication
 public class ReseptiApplication {
 
-	private final KayttajaRepo kayttajaRepo;
   private final ReseptiAinesRepo reseptiAinesRepo;
 
-  ReseptiApplication(ReseptiAinesRepo reseptiAinesRepo, KayttajaRepo kayttajaRepo) {
+  ReseptiApplication(ReseptiAinesRepo reseptiAinesRepo) {
     this.reseptiAinesRepo = reseptiAinesRepo;
-    this.kayttajaRepo = kayttajaRepo;
   }
 
   public static void main(String[] args) {

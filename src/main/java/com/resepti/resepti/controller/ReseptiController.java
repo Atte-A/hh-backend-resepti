@@ -1,6 +1,7 @@
 package com.resepti.resepti.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,28 +26,23 @@ public class ReseptiController {
     this.reseptiRepo = reseptiRepo;
   }
 
-  // Listaa reseptit tietokannasta
   @GetMapping
   public String haeReseptit(Model model) {
     model.addAttribute("reseptit", reseptiRepo.findAll());
     return "reseptit";
   }
 
-  // Hae resepti id:llä
   @GetMapping("/{id}")
   public String haeResepti(@PathVariable Long id, Model model) {
-
     Resepti resepti = reseptiRepo.findById(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reseptiä ei löytynyt id:llä " + id));
-
     model.addAttribute("resepti", resepti);
     return "resepti";
   }
 
-  // Lisää resepti
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
   public String lisaaResepti(@Valid Resepti resepti, BindingResult result, Model model) {
-
     if (result.hasErrors()) {
       model.addAttribute("reseptit", reseptiRepo.findAll());
       return "reseptit";
@@ -55,20 +51,29 @@ public class ReseptiController {
     return "redirect:/reseptit";
   }
 
-  // Muokkaa reseptiä
-  @PostMapping("/muokkaa/{id}")
-  public String muokkaaResepti(@PathVariable Long id, @Valid Resepti resepti, BindingResult result, Model model) {
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/muokkaa/{id}")
+  public String naytaMuokkaaResepti(@PathVariable Long id, Model model) {
+    Resepti resepti = reseptiRepo.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reseptiä ei löytynyt id:llä " + id));
+    model.addAttribute("resepti", resepti);
+    return "muokkaaResepti";
+  }
 
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/muokkaa/{id}")
+  public String tallennaMuokattuResepti(@PathVariable Long id, @Valid Resepti resepti, BindingResult result,
+      Model model) {
     if (result.hasErrors()) {
-      model.addAttribute("reseptit", resepti);
-      return "reseptit";
+      model.addAttribute("resepti", resepti);
+      return "muokkaaResepti";
     }
     resepti.setReseptiId(id);
     reseptiRepo.save(resepti);
     return "redirect:/reseptit";
   }
 
-  // Poista resepti
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/poista/{id}")
   public String poistaResepti(@PathVariable Long id) {
     if (!reseptiRepo.existsById(id)) {
@@ -77,5 +82,4 @@ public class ReseptiController {
     reseptiRepo.deleteById(id);
     return "redirect:/reseptit";
   }
-
 }
