@@ -107,14 +107,14 @@ public class ReseptiController {
   @PostMapping("/muokkaa/{id}")
   public String tallennaMuokattuResepti(@PathVariable Long id, @Valid Resepti resepti, BindingResult result,
       Model model) {
-    
+
     if (result.hasErrors()) {
       model.addAttribute("resepti", resepti);
       return "muokkaaResepti";
     }
     resepti.setReseptiId(id);
     reseptiRepo.save(resepti);
-    return "redirect:/resepti";
+    return "redirect:/reseptit/" + id;
   }
 
   // Poistaa reseptin
@@ -127,4 +127,5 @@ public class ReseptiController {
     reseptiRepo.deleteById(id);
     return "redirect:/reseptit";
   }
+
 }

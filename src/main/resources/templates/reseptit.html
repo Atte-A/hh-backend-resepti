@@ -8,6 +8,21 @@
 </head>
 
 <body>
+  <div sec:authorize="hasRole('ADMIN')" class="m-4 d-flex gap-2">
+
+  <a href="/reseptit" class="btn btn-primary">
+    Reseptit
+  </a>
+
+  <a href="/ainesosat" class="btn btn-primary">
+    Ainesosat
+  </a>
+
+   <a href="/tagit" class="btn btn-primary">
+    Tagit
+  </a>
+
+</div>
   <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1>Reseptit</h1>

@@ -2,6 +2,7 @@ package com.resepti.resepti;
 
 import com.resepti.resepti.repository.KayttajaRepo;
 import com.resepti.resepti.repository.ReseptiAinesRepo;
+import com.resepti.resepti.repository.TagRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,7 @@ import com.resepti.resepti.entity.Kategoria;
 import com.resepti.resepti.entity.Kayttaja;
 import com.resepti.resepti.entity.Resepti;
 import com.resepti.resepti.entity.ReseptiAines;
+import com.resepti.resepti.entity.Tag;
 import com.resepti.resepti.repository.AinesosaRepo;
 import com.resepti.resepti.repository.KategoriaRepo;
 import com.resepti.resepti.repository.ReseptiRepo;
@@ -19,10 +21,12 @@ import com.resepti.resepti.repository.ReseptiRepo;
 @SpringBootApplication
 public class ReseptiApplication {
 
+  private final TagRepo tagRepo;
   private final ReseptiAinesRepo reseptiAinesRepo;
 
-  ReseptiApplication(ReseptiAinesRepo reseptiAinesRepo) {
+  ReseptiApplication(ReseptiAinesRepo reseptiAinesRepo, TagRepo tagRepo) {
     this.reseptiAinesRepo = reseptiAinesRepo;
+    this.tagRepo = tagRepo;
   }
 
   public static void main(String[] args) {
@@ -67,6 +71,14 @@ public class ReseptiApplication {
       // Kayttajat
       kayttajaRepo.save(new Kayttaja("admin", "$2a$12$OcgbOjhsqrX/xYweAl1X.Osh1b4gkEaqTI/Gm1I3wEWuvx5sKszm.", "ADMIN"));
       kayttajaRepo.save(new Kayttaja("user", "$2a$12$zvZQ4K9Fp9NYLwai7RTf..eZPM2zR6xiCHSY6PiuoJugrbEFVOln6","USER"));
+
+      // Tagit
+      tagRepo.save(new Tag("texmex"));
+      tagRepo.save(new Tag("vegaaninen"));
+      tagRepo.save(new Tag("arkiruoka"));
+      tagRepo.save(new Tag("jälkiruoka"));
+      tagRepo.save(new Tag("alkupala"));
+      tagRepo.save(new Tag("nopea"));
     };
   }
 
