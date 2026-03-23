@@ -73,12 +73,11 @@ public class AinesosaController {
     ainesosaRepo.deleteById(id);
     } catch (DataIntegrityViolationException e) {
     model.addAttribute("error",
-        "Ainesosaa ei voi poistaa, koska se on käytössä resepteissä");
+        "Ainesosaa ei voi poistaa, koska se on käytössä reseptissä");
     model.addAttribute("ainesosat", ainesosaRepo.findAll());
     return "ainesosat";
     }
 
-    ainesosaRepo.deleteById(id);
     return "redirect:/ainesosat";
   }
 

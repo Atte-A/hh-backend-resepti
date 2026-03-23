@@ -1,5 +1,6 @@
 package com.resepti.resepti.controller;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -60,12 +61,19 @@ public class TagController {
   // Poistaa tagin
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/{id}")
-  public String poistaTagi(@PathVariable Long id) {
+  public String poistaTagi(@PathVariable Long id, Model model) {
     if (!tagRepo.existsById(id)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tagia ei löytynyt id:llä " + id);
     }
 
-    tagRepo.deleteById(id);
+    try {
+      tagRepo.deleteById(id);
+    } catch (DataIntegrityViolationException e) {
+      model.addAttribute("error", "Tagia ei voi poistaa, koska se on käytössä reseptissä");
+      model.addAttribute("tagit", tagRepo.findAll());
+      return "tagit";
+    }
+
     return "redirect:/tagit";
   }
 
