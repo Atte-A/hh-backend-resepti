@@ -19,7 +19,7 @@ public class SecurityConfig  {
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests( authorize -> authorize
-				.requestMatchers("/","/login", "/css/**").permitAll()
+				.requestMatchers("/","/login", "/css/**", "/h2-console/**").permitAll()
         .requestMatchers("/resepti/muokkaa/**", "/resepti/poista/**").hasRole("ADMIN")
 				.anyRequest().authenticated()                 
 			)                                       
@@ -30,7 +30,11 @@ public class SecurityConfig  {
 		)
 		.logout( logout -> logout
 			.permitAll()
-		);
+		)
+
+    .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+    .headers(headers -> headers.frameOptions(frame -> frame.disable()));
+    
 		return http.build();
 	}
 }

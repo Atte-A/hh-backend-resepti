@@ -34,8 +34,14 @@
     </div>
 
     <div class="list-group">
-      <a th:each="resepti : ${reseptit}" th:href="@{/reseptit/{id}(id=${resepti.reseptiId})}" th:text="${resepti.nimi}"
-        class="list-group-item list-group-item-action">
+      <a th:each="resepti : ${reseptit}" th:href="@{/reseptit/{id}(id=${resepti.reseptiId})}"
+        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+
+        <span th:text="${resepti.nimi}"></span>
+        <span>
+          <span th:each="tag : ${resepti.tags}" th:text="${tag.nimi}" class="badge bg-primary ms-1">
+          </span>
+        </span>
       </a>
 
     </div>

@@ -22,6 +22,9 @@
   </a>
 
 </div>
+<div th:if="${error}" class="alert alert-danger m-4">
+    <span th:text="${error}"></span>
+</div>
 
 <body>
   <div class="container mt-5">

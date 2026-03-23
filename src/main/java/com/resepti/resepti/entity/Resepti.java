@@ -53,9 +53,6 @@ public class Resepti {
   @Column(name = "annosmaara")
   private Integer annosmaara;
 
-  @OneToMany(mappedBy = "resepti", cascade = CascadeType.ALL)
-  private List<ReseptiKategoria> kategoriat = new ArrayList<>();
-
   @OneToMany(mappedBy = "resepti", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ReseptiAines> ainekset = new ArrayList<>();
 
@@ -134,14 +131,6 @@ public class Resepti {
     this.annosmaara = annosmaara;
   }
 
-  public List<ReseptiKategoria> getKategoriat() {
-    return kategoriat;
-  }
-
-  public void setKategoriat(List<ReseptiKategoria> kategoriat) {
-    this.kategoriat = kategoriat;
-  }
-
   public List<ReseptiAines> getAinekset() {
     return ainekset;
   }
@@ -161,8 +150,7 @@ public class Resepti {
   @Override
   public String toString() {
     return "Resepti [reseptiId=" + reseptiId + ", nimi=" + nimi + ", kuvaus=" + kuvaus + ", ohje=" + ohje
-        + ", valmistusaika=" + valmistusaika + ", annosmaara=" + annosmaara + ", kategoriat=" + kategoriat
-        + ", ainekset=" + ainekset + ", tags=" + tags + "]";
+        + ", valmistusaika=" + valmistusaika + ", annosmaara=" + annosmaara + ", ainekset=" + ainekset + ", tags=" + tags + "]";
   }
 
 }

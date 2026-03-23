@@ -1,5 +1,6 @@
 package com.resepti.resepti.controller;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -63,9 +64,18 @@ public class AinesosaController {
   // Poistaa ainesosan
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/{id}")
-  public String poistaAinesosa(@PathVariable Long id) {
+  public String poistaAinesosa(@PathVariable Long id, Model model) {
     if (!ainesosaRepo.existsById(id)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ainesosaa ei löytynyt id:llä " + id);
+    }
+
+    try {
+    ainesosaRepo.deleteById(id);
+    } catch (DataIntegrityViolationException e) {
+    model.addAttribute("error",
+        "Ainesosaa ei voi poistaa, koska se on käytössä resepteissä");
+    model.addAttribute("ainesosat", ainesosaRepo.findAll());
+    return "ainesosat";
     }
 
     ainesosaRepo.deleteById(id);

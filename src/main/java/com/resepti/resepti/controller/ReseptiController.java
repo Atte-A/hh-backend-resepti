@@ -12,13 +12,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.resepti.resepti.entity.Ainesosa;
 import com.resepti.resepti.entity.Resepti;
 import com.resepti.resepti.entity.ReseptiAines;
+import com.resepti.resepti.entity.Tag;
 import com.resepti.resepti.repository.AinesosaRepo;
 import com.resepti.resepti.repository.ReseptiRepo;
+import com.resepti.resepti.repository.TagRepo;
 
 import jakarta.validation.Valid;
 
@@ -28,10 +31,12 @@ public class ReseptiController {
 
   private final ReseptiRepo reseptiRepo;
   private final AinesosaRepo ainesosaRepo;
+  private final TagRepo tagRepo;
 
-  public ReseptiController(ReseptiRepo reseptiRepo, AinesosaRepo ainesosaRepo) {
+  public ReseptiController(ReseptiRepo reseptiRepo, AinesosaRepo ainesosaRepo, TagRepo tagRepo) {
     this.reseptiRepo = reseptiRepo;
     this.ainesosaRepo = ainesosaRepo;
+    this.tagRepo = tagRepo;
   }
 
   // Näyttää kaikki reseptit
@@ -60,14 +65,17 @@ public class ReseptiController {
     }
     model.addAttribute("resepti", resepti);
     model.addAttribute("ainesosat", ainesosaRepo.findAll());
+    model.addAttribute("tagit", tagRepo.findAll());
     return "lisaaResepti";
   }
 
   // Tallentaa reseptin
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/lisaa")
-  public String luoUusiResepti(@Valid Resepti resepti, BindingResult result, Model model) {
+  public String luoUusiResepti(@Valid Resepti resepti, BindingResult result,
+      @RequestParam(required = false) List<Long> tagId, Model model) {
     if (result.hasErrors()) {
+      model.addAttribute("tagit", tagRepo.findAll());
       return "lisaaResepti";
     }
 
@@ -87,6 +95,14 @@ public class ReseptiController {
     }
 
     resepti.setAinekset(validAinekset);
+
+    if (tagId != null) {
+      List<Tag> tags = tagRepo.findAllById(tagId);
+
+      for (Tag tag : tags) {
+        resepti.addTag(tag);
+      }
+    }
 
     reseptiRepo.save(resepti);
     return "redirect:/reseptit";
