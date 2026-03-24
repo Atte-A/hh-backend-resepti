@@ -1,7 +1,9 @@
 package com.resepti.resepti.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "ainesosa")
@@ -20,17 +23,29 @@ public class Ainesosa {
   @Column(name = "ainesosa_id")
   private Long ainesosaId;
   
-  @Column(name = "nimi")
+  @NotBlank(message = "Aineosan nimi on pakollinen")
+  @Column(name = "nimi", nullable = false, unique = true)
   private String nimi;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "ainesosa")
-  private List<ReseptiAines> reseptit = new ArrayList<>();
+  private Set<ReseptiAines> reseptit = new HashSet<>();
 
   public Ainesosa() {}
 
   public Ainesosa(String nimi) {
     this.nimi = nimi;
   }
+
+  public void addReseptiAines(ReseptiAines reseptiAines) {
+    reseptit.add(reseptiAines);
+    reseptiAines.setAinesosa(this);
+}
+
+public void removeReseptiAines(ReseptiAines reseptiAines) {
+    reseptit.remove(reseptiAines);
+    reseptiAines.setAinesosa(null);
+}
 
   public Long getAinesosaId() {
     return ainesosaId;

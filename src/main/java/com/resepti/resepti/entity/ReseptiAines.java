@@ -1,5 +1,7 @@
 package com.resepti.resepti.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +19,7 @@ public class ReseptiAines {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long reseptiAinesId;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "resepti_id", nullable = false)
   private Resepti resepti;
@@ -26,7 +29,7 @@ public class ReseptiAines {
   private Ainesosa ainesosa;
 
   @Column(name = "maara")
-  private double maara;
+  private Double maara;
 
   @Column(name = "yksikko")
   private String yksikko;
@@ -64,11 +67,11 @@ public class ReseptiAines {
     this.ainesosa = ainesosa;
   }
 
-  public double getMaara() {
+  public Double getMaara() {
     return maara;
   }
 
-  public void setMaara(double maara) {
+  public void setMaara(Double maara) {
     this.maara = maara;
   }
 
@@ -78,6 +81,13 @@ public class ReseptiAines {
 
   public void setYksikko(String yksikko) {
     this.yksikko = yksikko;
+  }
+
+  @Override
+  public String toString() {
+    return "ReseptiAinesosa [reseptiAinesId=" + reseptiAinesId +
+          ", maara=" + maara +
+          ", yksikko=" + yksikko + "]";
   }
 
 }
