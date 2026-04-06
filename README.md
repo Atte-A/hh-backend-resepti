@@ -32,7 +32,7 @@ Regular users have read-only access:
 ## ⚙️ Architecture
 - Frontend: Thymeleaf, Bootstrap
 - Backend: Spring Boot (MVC + REST Controllers)
-- API Layer: RESTfull endpoints for programmatic access
+- API Layer: RESTful endpoints for programmatic access
 - Database: PostgreSQL
 - ORM: Spring Data JPA / Hibernate
 
@@ -51,7 +51,7 @@ Regular users have read-only access:
 ### Ingredients & Tags System
 - Manage ingredients and tags independently
 - Associate multiple ingredients and tags with recipes
-- Many-tomany relationships implemented using JPA/Hibernate
+- Many-to-many relationships implemented using JPA/Hibernate
 
 ### Validation & Error Handling
 - Bean Validation used for form validation
@@ -126,7 +126,7 @@ cd hh-backend-resepti
 ```
 
 2. Configure PostgreSQL database
-Update >application.properties>
+Update `application.properties`
 ```bash
 spring.datasource.url=jdbc:postgresql://localhost:5432/your_db
 spring.datasource.username=your_username
