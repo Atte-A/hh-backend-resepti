@@ -12,7 +12,15 @@ During the development, I focused on:
 - Designing and managing many-to-many relationships
 - Applying validation constraints using Bean Validation (e.g. @NotNull, @Size, @Email)
 - Building error handling for form submissions
-- Structuring a maintainable MVC (Model-View-Controller) architecture with Thymeleaf views 
+- Structuring a maintainable MVC (Model-View-Controller) architecture with Thymeleaf views
+
+## 📸 Preview (Coming soon)
+
+### Login
+
+### Recipes
+
+### Add Recipe
 
 ## 📦 Product Overview
 
@@ -38,36 +46,36 @@ Regular users have read-only access:
 
 ## ✨ Features
 
-### Authentication & Authorization
+### 🔐 Authentication & Authorization
 - Secure login system using Spring Security
 - Role-Based Access Control (RBAC)
 - Protected routes based on user roles
 
-### Recipe Management (CRUD)
+### 👨‍🍳 Recipe Management (CRUD)
 - Create, read, update and delete recipes (ADMIN only)
 - View details recipe pages including ingredients and instructions
 - Structured recipe data with relational mapping
 
-### Ingredients & Tags System
+### 🧂 Ingredients & Tags System
 - Manage ingredients and tags independently
 - Associate multiple ingredients and tags with recipes
 - Many-to-many relationships implemented using JPA/Hibernate
 
-### Validation & Error Handling
+### ✅ Validation & Error Handling
 - Bean Validation used for form validation
 - Server-side validation for user inputs
 - User-friendly error messages and feedback
 
-### Server-Side UI
+### 🎨 Server-Side UI
 - Thymeleaf templates for dynamic server-rendered pages
 - Bootstrap for clean UI designs
 
-### Database Integration
+### 🗄️ Database Integration
 - PostgreSQL used as the relational database
 - JPA/Hibernate for ORM and entity management
 - Proper relational schema design with normalized structure
 
-### Development Features
+### 🌱 Development Features
 - Seed data for testing and development purposes
 - Consistent MVC architecture
 
@@ -110,14 +118,14 @@ All write operations (POST, PUT, DELETE) are restricted to **ADMIN** users via S
 |DELETE | /api/tagit/{id} | Delete a tag |
 
 
-## Running Project Locally
+## 🚀 Running the Project Locally
 
 ### Prerequisites
 - Java 17+
 - Maven
 - PostgreSQL
 
-### Setup
+### 🛠️ Setup
 
 1. Clone repository
 ```bash
@@ -139,7 +147,7 @@ mvn spring-boot:run
 4. Open in browser
 http://localhost:8080
 
-## Future Improvements
+## 🚧 Future Improvements
 - Recipe images
 - Pagiantion and filtering for recipes
 - Recipe ratings and comments system
