@@ -18,10 +18,23 @@ During the development, I focused on:
 
 ### Login
 ![Login Page](./docs/screenshots/login.png)
+Login page.
 
 ### Recipes
+![Recipe Page](./docs/screenshots/list.png)
+List of recipes.
 
-### Add Recipe
+## 🔑 Demo Credentials
+
+You can log in using the following demo accounts:
+
+### 👨‍💼 Admin
+- Username: admin
+- Password: admin
+
+### 🧑 User
+- Username: user
+- Password: user
 
 ## 📦 Product Overview
 
