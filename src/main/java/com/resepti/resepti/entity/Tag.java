@@ -1,7 +1,9 @@
 package com.resepti.resepti.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tag")
@@ -19,23 +22,37 @@ public class Tag {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long tagId;
 
-  @Column(name = "nimi")
-  private String tag;
+  @NotBlank(message = "Tagin nimi on pakollinen")
+  @Column(name = "nimi", nullable = false, unique = true)
+  private String nimi;
 
+  @JsonIgnore
   @ManyToMany(mappedBy = "tags")
-  private List<Resepti> reseptit = new ArrayList<>();
+  private Set<Resepti> reseptit = new HashSet<>();
 
   public Tag() {}
 
-  public Tag(String tag) {
-    this.tag = tag;
+  public Tag(String nimi) {
+    this.nimi = nimi;
   }
-  
-  public void setReseptit(List<Resepti> reseptit) {
+
+  public void addResepti(Resepti resepti) {
+    reseptit.add(resepti);
+    if (!resepti.getTags().contains(this)) {
+        resepti.getTags().add(this);
+    }
+  }
+
+  public void removeResepti(Resepti resepti) {
+      reseptit.remove(resepti);
+      resepti.getTags().remove(this);
+  }
+
+  public void setReseptit(Set<Resepti> reseptit) {
     this.reseptit = reseptit;
   }
 
-  public List<Resepti> getReseptit() {
+  public Set<Resepti> getReseptit() {
     return reseptit;
   }
 
@@ -47,17 +64,18 @@ public class Tag {
     this.tagId = tagId;
   }
 
-  public String getTag() {
-    return tag;
+  public String getNimi() {
+    return nimi;
   }
 
-  public void setTag(String tag) {
-    this.tag = tag;
+  public void setNimi(String nimi) {
+    this.nimi = nimi;
   }
 
   @Override
   public String toString() {
-    return "Tag [tagId=" + tagId + ", tag=" + tag + "]";
+    return "Tag [tagId=" + tagId + ", nimi=" + nimi + "]";
   }
+
 
 }

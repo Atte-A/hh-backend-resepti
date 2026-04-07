@@ -1,7 +1,9 @@
 package com.resepti.resepti.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -14,6 +16,11 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "resepti")
@@ -23,25 +30,30 @@ public class Resepti {
   @Column(name = "resepti_id")
   private Long reseptiId;
 
-  @Column(name = "nimi", nullable = false)
+  @NotBlank(message = "Nimi on pakollinen")
+  @Size(min = 3, max = 50, message = "Nimi pitää olla 3 - 50 merkkiä pitkä")
+  @Column(name = "nimi", nullable = false, unique = true)
   private String nimi;
 
+  @Size(max = 100, message = "Kuvaus saa olla enintää 100 merkkiä")
   @Column(name = "kuvaus")
   private String kuvaus;
 
-  @Column(name = "ohje", nullable = false)
+  @NotBlank(message = "Ohje on pakollinen")
+  @Column(name = "ohje", nullable = false, columnDefinition = "TEXT")
   private String ohje;
 
+  @NotNull(message = "Valmistusaika on pakollinen")
+  @Max(value = 1440, message = "Valmistusaika ei saa ylittää 24 tuntia")
   @Column(name = "valmistusaika")
   private Integer valmistusaika;
 
+  @NotNull(message = "Annosmäärä on pakollinen")
+  @Min(value = 1, message = "Lisää annosmääräksi vähintään 1 annos")
   @Column(name = "annosmaara")
   private Integer annosmaara;
 
-  @OneToMany(mappedBy = "resepti", cascade = CascadeType.ALL)
-  private List<ReseptiKategoria> kategoriat = new ArrayList<>();
-
-  @OneToMany(mappedBy = "resepti", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "resepti", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ReseptiAines> ainekset = new ArrayList<>();
 
   @ManyToMany
@@ -49,7 +61,7 @@ public class Resepti {
     joinColumns = @JoinColumn(name = "resepti_id"),
     inverseJoinColumns = @JoinColumn(name = "tag_id")
   )
-  private List<Tag> tags = new ArrayList<>();
+  private Set<Tag> tags = new HashSet<>();
 
   public Resepti() {}
 
@@ -59,6 +71,16 @@ public class Resepti {
     this.ohje = ohje;
     this.valmistusaika = valmistusaika;
     this.annosmaara = annosmaara;
+  }
+
+  public void addTag(Tag tag) {
+    this.tags.add(tag);
+    tag.getReseptit().add(this);
+  }
+
+  public void removeTag(Tag tag) {
+    this.tags.remove(tag);
+    tag.getReseptit().remove(this);
   }
 
   public Long getReseptiId() {
@@ -109,10 +131,26 @@ public class Resepti {
     this.annosmaara = annosmaara;
   }
 
+  public List<ReseptiAines> getAinekset() {
+    return ainekset;
+  }
+
+  public void setAinekset(List<ReseptiAines> ainekset) {
+    this.ainekset = ainekset;
+  }
+
+  public Set<Tag> getTags() {
+    return tags;
+  }
+
+  public void setTags(Set<Tag> tags) {
+    this.tags = tags;
+  }
+
   @Override
   public String toString() {
     return "Resepti [reseptiId=" + reseptiId + ", nimi=" + nimi + ", kuvaus=" + kuvaus + ", ohje=" + ohje
-        + ", valmistusaika=" + valmistusaika + ", annosmaara=" + annosmaara + "]";
+        + ", valmistusaika=" + valmistusaika + ", annosmaara=" + annosmaara + ", ainekset=" + ainekset + ", tags=" + tags + "]";
   }
 
 }
