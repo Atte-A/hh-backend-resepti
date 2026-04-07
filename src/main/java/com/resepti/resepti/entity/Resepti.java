@@ -40,7 +40,7 @@ public class Resepti {
   private String kuvaus;
 
   @NotBlank(message = "Ohje on pakollinen")
-  @Column(name = "ohje", nullable = false)
+  @Column(name = "ohje", nullable = false, columnDefinition = "TEXT")
   private String ohje;
 
   @NotNull(message = "Valmistusaika on pakollinen")
