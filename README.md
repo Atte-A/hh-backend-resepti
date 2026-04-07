@@ -17,6 +17,7 @@ During the development, I focused on:
 ## 📸 Preview (Coming soon)
 
 ### Login
+![Login Page](./docs/screenshots/login.png)
 
 ### Recipes
 
