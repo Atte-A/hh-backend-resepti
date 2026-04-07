@@ -18,11 +18,9 @@ During the development, I focused on:
 
 ### Login
 ![Login Page](./docs/screenshots/login.png)
-Login page.
 
 ### Recipes
 ![Recipe Page](./docs/screenshots/list.png)
-List of recipes.
 
 ## 🔑 Demo Credentials
 
