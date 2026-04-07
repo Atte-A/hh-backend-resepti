@@ -22,6 +22,9 @@ During the development, I focused on:
 ### Recipes
 ![Recipe Page](./docs/screenshots/list.png)
 
+### Add Recipe
+![Add Recipe](./docs/screenshots/add.png)
+
 ## 🔑 Demo Credentials
 
 You can log in using the following demo accounts:
