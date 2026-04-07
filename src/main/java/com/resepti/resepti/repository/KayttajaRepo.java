@@ -9,5 +9,5 @@ import com.resepti.resepti.entity.Kayttaja;
 public interface KayttajaRepo extends JpaRepository<Kayttaja, Long> {
 
   Optional<Kayttaja> findByKayttajatunnus(String kayttajatunnus);
-
+  boolean existsByKayttajatunnus(String kayttajatunnus);
 }
