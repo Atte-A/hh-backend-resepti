@@ -14,7 +14,7 @@ During the development, I focused on:
 - Building error handling for form submissions
 - Structuring a maintainable MVC (Model-View-Controller) architecture with Thymeleaf views
 
-## 📸 Preview (Coming soon)
+## 📸 Preview
 
 ### Login
 ![Login Page](./docs/screenshots/login.png)
