@@ -55,7 +55,7 @@ Regular users have read-only access:
 ## ⚙️ Architecture
 - Frontend: Thymeleaf, Bootstrap
 - Backend: Spring Boot (MVC + REST Controllers)
-- API Layer: RESTful endpoints for programmatic access
+- API Layer: RESTful endpoints
 - Database: PostgreSQL
 - ORM: Spring Data JPA / Hibernate
 
