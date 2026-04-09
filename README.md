@@ -164,9 +164,9 @@ http://localhost:8080
 
 ## 🚧 Future Improvements
 - Recipe images
-- Pagiantion and filtering for recipes
+- Pagination and filtering for recipes
 - Recipe ratings and comments system
-- Improved UI/UX enhancements
+- UI/UX enhancements
 
 ## 👤 Author  
 
