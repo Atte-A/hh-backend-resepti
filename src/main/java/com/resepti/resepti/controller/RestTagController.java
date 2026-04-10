@@ -2,6 +2,8 @@ package com.resepti.resepti.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import com.resepti.resepti.entity.Tag;
 import com.resepti.resepti.repository.TagRepo;
 
@@ -32,6 +34,7 @@ public class RestTagController {
   }
 
   // Luo uusi tag
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Tag luoTag(@Valid @RequestBody Tag uusiTag) {
@@ -39,6 +42,7 @@ public class RestTagController {
   }
 
   // Muokkaa tagia
+  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/{id}")
   public Tag muokkaaTag(@PathVariable Long id, @Valid @RequestBody Tag muokattuTag) {
     muokattuTag.setTagId(id);
@@ -46,6 +50,7 @@ public class RestTagController {
   }
 
   // Poista tag
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/{id}")
   public void poistaTag(@PathVariable Long id) {
     tagRepo.deleteById(id);

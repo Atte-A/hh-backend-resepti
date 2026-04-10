@@ -14,13 +14,28 @@ During the development, I focused on:
 - Building error handling for form submissions
 - Structuring a maintainable MVC (Model-View-Controller) architecture with Thymeleaf views
 
-## 📸 Preview (Coming soon)
+## 📸 Preview
 
 ### Login
+![Login Page](./docs/screenshots/login.png)
 
 ### Recipes
+![Recipe Page](./docs/screenshots/list.png)
 
 ### Add Recipe
+![Add Recipe](./docs/screenshots/add.png)
+
+## 🔑 Demo Credentials
+
+You can log in using the following demo accounts:
+
+### 👨‍💼 Admin
+- Username: admin
+- Password: admin
+
+### 🧑 User
+- Username: user
+- Password: user
 
 ## 📦 Product Overview
 
@@ -40,7 +55,7 @@ Regular users have read-only access:
 ## ⚙️ Architecture
 - Frontend: Thymeleaf, Bootstrap
 - Backend: Spring Boot (MVC + REST Controllers)
-- API Layer: RESTful endpoints for programmatic access
+- API Layer: RESTful endpoints
 - Database: PostgreSQL
 - ORM: Spring Data JPA / Hibernate
 
@@ -149,9 +164,9 @@ http://localhost:8080
 
 ## 🚧 Future Improvements
 - Recipe images
-- Pagiantion and filtering for recipes
+- Pagination and filtering for recipes
 - Recipe ratings and comments system
-- Improved UI/UX enhancements
+- UI/UX enhancements
 
 ## 👤 Author  
 

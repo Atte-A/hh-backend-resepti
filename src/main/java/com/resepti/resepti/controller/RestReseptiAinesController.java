@@ -16,6 +16,7 @@ import com.resepti.resepti.repository.ReseptiRepo;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +51,7 @@ public class RestReseptiAinesController {
   }
 
   // Lisää tietyn ainesosan tiettyyn reseptiin
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public ReseptiAines lisaaReseptiAines(@PathVariable Long reseptiId, @RequestBody ReseptiAinesDTO request) {
@@ -67,6 +69,7 @@ public class RestReseptiAinesController {
   }
 
   // Muokkaa tietyn reseptin tiettyä ainesosaa
+  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/{ainesosaId}")
   public ReseptiAines muokkaaReseptiAines(@PathVariable Long reseptiId, @PathVariable Long ainesosaId,
       @RequestBody ReseptiAinesDTO request) {
@@ -82,6 +85,7 @@ public class RestReseptiAinesController {
   }
 
   // Poistaa tietyn ainesosan tietystä reseptistä
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/{ainesosaId}")
   public void poistaReseptiAines(@PathVariable Long reseptiId, @PathVariable Long ainesosaId) {
     

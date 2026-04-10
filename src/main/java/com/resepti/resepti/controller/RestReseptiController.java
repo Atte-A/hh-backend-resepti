@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,6 +47,7 @@ public class RestReseptiController {
   }
 
   // Luo uusi resepti
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Resepti luoResepti(@Valid @RequestBody Resepti uusiResepti) {
@@ -53,6 +55,7 @@ public class RestReseptiController {
   }
 
   // Muokkaa reseptiä
+  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/{id}")
   public Resepti muokkaaResepti(@PathVariable Long id, @Valid @RequestBody Resepti muokattuResepti) {
     muokattuResepti.setReseptiId(id);
@@ -60,6 +63,7 @@ public class RestReseptiController {
   }
 
   // Poista resepti
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/{id}")
   public void poistaResepti(@PathVariable Long id) {
     reseptiRepo.deleteById(id);

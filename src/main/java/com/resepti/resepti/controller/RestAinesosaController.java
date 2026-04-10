@@ -3,6 +3,7 @@ package com.resepti.resepti.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,7 @@ public class RestAinesosaController {
   }
 
   // Lisää uusi ainesosa
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Ainesosa lisaaAinesosa(@RequestBody Ainesosa uusiAinesosa) {
@@ -50,6 +52,7 @@ public class RestAinesosaController {
   }
 
   // Muokkaa ainesosaa
+  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/{id}")
   public Ainesosa muokkaaAinesosa(@PathVariable Long id, @RequestBody Ainesosa muokattuAinesosa) {
     ainesosaRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aineosaa ei lötynyt id:llä " + id));
@@ -58,6 +61,7 @@ public class RestAinesosaController {
   }
 
   // Poista ainesosa
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void poistaAinesosa(@PathVariable Long id) {
