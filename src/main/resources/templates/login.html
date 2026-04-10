@@ -11,6 +11,13 @@
   <div class="text-center">
 
     <h3 class="mb-3">Kirjautuminen</h3>
+    <div th:if="${param.error}" class="alert alert-danger mt-2">
+      Väärä käyttäjätunnus tai salasana
+    </div>
+
+    <div th:if="${param.logout}" class="alert alert-success mt-2">
+      Olet kirjautunut ulos onnistuneesti
+    </div>
 
     <form th:action="@{/login}" method="post" class="mt-3 mb-3">
       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
