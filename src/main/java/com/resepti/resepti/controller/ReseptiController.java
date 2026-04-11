@@ -2,7 +2,9 @@ package com.resepti.resepti.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -74,12 +76,15 @@ public class ReseptiController {
   @PostMapping("/lisaa")
   public String luoUusiResepti(@Valid Resepti resepti, BindingResult result,
       @RequestParam(required = false) List<Long> tagId, Model model) {
+
     if (result.hasErrors()) {
       model.addAttribute("tagit", tagRepo.findAll());
+      model.addAttribute("ainesosat", ainesosaRepo.findAll());
       return "lisaaResepti";
     }
 
     List<ReseptiAines> reseptinAinekset = new ArrayList<>();
+
     for (ReseptiAines ra : resepti.getAinekset()) {
       if (ra.getAinesosa() == null || ra.getAinesosa().getAinesosaId() == null) {
         continue;
@@ -98,13 +103,20 @@ public class ReseptiController {
 
     if (tagId != null) {
       List<Tag> tags = tagRepo.findAllById(tagId);
-
       for (Tag tag : tags) {
         resepti.addTag(tag);
       }
     }
 
-    reseptiRepo.save(resepti);
+    try {
+      reseptiRepo.save(resepti);
+    } catch (DataIntegrityViolationException e) {
+      result.rejectValue("nimi", "duplicate", "Resepti samalla nimellä on jo olemassa");
+      model.addAttribute("tagit", tagRepo.findAll());
+      model.addAttribute("ainesosat", ainesosaRepo.findAll());
+      return "lisaaResepti";
+    }
+
     return "redirect:/reseptit";
   }
 
@@ -132,23 +144,32 @@ public class ReseptiController {
       @RequestParam(required = false) List<Long> tagId,
       Model model) {
 
+    Resepti existing = reseptiRepo.findById(id)
+        .orElseThrow();
+
+    // Tarkistus löytyykö samalla nimellä
+    // Jos löytyy ja on eri id --> duplikaatti
+    String newName = resepti.getNimi();
+
+    Optional<Resepti> existingWithName = reseptiRepo.findByNimi(newName);
+
+    if (existingWithName.isPresent()
+        && !existingWithName.get().getReseptiId().equals(id)) {
+      result.rejectValue("nimi", "duplicate", "Resepti samalla nimellä on jo olemassa");
+    }
+
     if (result.hasErrors()) {
       model.addAttribute("ainesosat", ainesosaRepo.findAll());
       model.addAttribute("tagit", tagRepo.findAll());
       return "lisaaResepti";
     }
 
-    Resepti existing = reseptiRepo.findById(id)
-        .orElseThrow();
-
-    // päivitä scalar fields
     existing.setNimi(resepti.getNimi());
     existing.setKuvaus(resepti.getKuvaus());
     existing.setOhje(resepti.getOhje());
     existing.setValmistusaika(resepti.getValmistusaika());
     existing.setAnnosmaara(resepti.getAnnosmaara());
 
-    // clear + rebuild ainekset (yksinkertainen malli)
     existing.getAinekset().clear();
 
     for (ReseptiAines ra : resepti.getAinekset()) {
@@ -163,7 +184,6 @@ public class ReseptiController {
       existing.getAinekset().add(ra);
     }
 
-    // tags reset
     existing.getTags().clear();
 
     if (tagId != null) {
@@ -187,5 +207,4 @@ public class ReseptiController {
     reseptiRepo.deleteById(id);
     return "redirect:/reseptit";
   }
-
 }
