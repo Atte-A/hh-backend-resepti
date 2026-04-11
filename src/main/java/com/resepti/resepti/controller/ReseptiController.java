@@ -79,7 +79,7 @@ public class ReseptiController {
       return "lisaaResepti";
     }
 
-    List<ReseptiAines> validAinekset = new ArrayList<>();
+    List<ReseptiAines> reseptinAinekset = new ArrayList<>();
     for (ReseptiAines ra : resepti.getAinekset()) {
       if (ra.getAinesosa() == null || ra.getAinesosa().getAinesosaId() == null) {
         continue;
@@ -91,10 +91,10 @@ public class ReseptiController {
 
       ra.setAinesosa(ainesosa);
       ra.setResepti(resepti);
-      validAinekset.add(ra);
+      reseptinAinekset.add(ra);
     }
 
-    resepti.setAinekset(validAinekset);
+    resepti.setAinekset(reseptinAinekset);
 
     if (tagId != null) {
       List<Tag> tags = tagRepo.findAllById(tagId);
