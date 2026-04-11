@@ -3,82 +3,110 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Lisää Resepti</title>
+  <title th:text="${resepti.reseptiId == null} ? 'Lisää resepti' : 'Muokkaa reseptiä'">
+    Resepti
+  </title>
   <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 </head>
 
 <body>
   <div class="container mt-5">
-    <h1>Lisää uusi resepti</h1>
 
-    <form th:action="@{/reseptit/lisaa}" th:object="${resepti}" method="post">
+    <h1 th:text="${resepti.reseptiId == null} ? 'Lisää uusi resepti' : 'Muokkaa reseptiä'"></h1>
+
+    <!-- Lisää, jos id:tä ei ole olemassa, muuten muokkaa -->
+    <form th:action="${resepti.reseptiId == null}
+        ? @{/reseptit/lisaa}
+        : @{/reseptit/muokkaa/{id}(id=${resepti.reseptiId})}" th:object="${resepti}" method="post">
+
       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+      <!-- Piilotettu id muokkausta varten -->
+      <input type="hidden" th:field="*{reseptiId}" />
 
       <div class="mb-3">
         <label class="form-label">Nimi</label>
         <input type="text" class="form-control" th:field="*{nimi}" />
-        <div class="text-danger" th:if="${#fields.hasErrors('nimi')}" th:errors="*{nimi}"></div>
+        <div class="text-danger" th:errors="*{nimi}"></div>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Kuvaus</label>
         <input type="text" class="form-control" th:field="*{kuvaus}" />
-        <div class="text-danger" th:if="${#fields.hasErrors('kuvaus')}" th:errors="*{kuvaus}"></div>
+        <div class="text-danger" th:errors="*{kuvaus}"></div>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Ohje</label>
         <textarea class="form-control" th:field="*{ohje}"></textarea>
-        <div class="text-danger" th:if="${#fields.hasErrors('ohje')}" th:errors="*{ohje}"></div>
+        <div class="text-danger" th:errors="*{ohje}"></div>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Valmistusaika (min)</label>
         <input type="number" class="form-control" th:field="*{valmistusaika}" />
-        <div class="text-danger" th:if="${#fields.hasErrors('valmistusaika')}" th:errors="*{valmistusaika}"></div>
+        <div class="text-danger" th:errors="*{valmistusaika}"></div>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Annoksia</label>
         <input type="number" class="form-control" th:field="*{annosmaara}" />
-        <div class="text-danger" th:if="${#fields.hasErrors('annosmaara')}" th:errors="*{annosmaara}"></div>
+        <div class="text-danger" th:errors="*{annosmaara}"></div>
       </div>
+
+      <hr />
 
       <h2>Ainekset</h2>
 
-      <div th:each="ainekset, iterStat : *{ainekset}">
-        <div class="row mb-2">
-          <div class="col">
-            <select class="form-select" th:field="*{ainekset[__${iterStat.index}__].ainesosa.ainesosaId}">
-              <option value="">Valitse ainesosa</option>
-              <option th:each="a : ${ainesosat}" th:value="${a.ainesosaId}" th:text="${a.nimi}"></option>
-            </select>
-          </div>
-          <div class="col">
-            <input type="number" step="0.1" class="form-control" th:field="*{ainekset[__${iterStat.index}__].maara}"
-              placeholder="Määrä" />
-          </div>
-          <div class="col">
-            <input type="text" class="form-control" th:field="*{ainekset[__${iterStat.index}__].yksikko}"
-              placeholder="Yksikkö" />
-          </div>
-        </div>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Tagit</label>
+      <div th:each="ra, stat : *{ainekset}" class="row mb-2">
 
-        <div th:each="tag : ${tagit}" class="form-check">
-          <input class="form-check-input" type="checkbox" name="tagIds" th:value="${tag.tagId}" />
-
-          <label class="form-check-label" th:text="${tag.nimi}">
-          </label>
+        <div class="col">
+          <select class="form-select" th:field="*{ainekset[__${stat.index}__].ainesosa.ainesosaId}">
+            <option value="">Valitse ainesosa</option>
+            <option th:each="a : ${ainesosat}" th:value="${a.ainesosaId}" th:text="${a.nimi}">
+            </option>
+          </select>
         </div>
+
+        <div class="col">
+          <input type="number" step="0.1" class="form-control" th:field="*{ainekset[__${stat.index}__].maara}"
+            placeholder="Määrä" />
+        </div>
+
+        <div class="col">
+          <input type="text" class="form-control" th:field="*{ainekset[__${stat.index}__].yksikko}"
+            placeholder="Yksikkö" />
+        </div>
+
       </div>
-      <div class="d-flex mt-4 gap-3">
-        <button type="submit" class="btn btn-success">Lisää resepti</button>
+
+      <hr />
+
+      <h2>Tagit</h2>
+
+      <div th:each="tag : ${tagit}" class="form-check">
+
+        <input class="form-check-input" type="checkbox" name="tagId" th:value="${tag.tagId}"
+          th:checked="${resepti.tags != null and resepti.tags.contains(tag)}" />
+
+        <label class="form-check-label" th:text="${tag.nimi}"></label>
+
+      </div>
+
+      <hr />
+
+      <div class="d-flex gap-3 mt-4">
+
+        <button type="submit" class="btn btn-success"
+          th:text="${resepti.reseptiId == null} ? 'Lisää resepti' : 'Tallenna muutokset'">
+        </button>
+
         <a href="/reseptit" class="btn btn-secondary">Peruuta</a>
+
       </div>
+
     </form>
+
   </div>
 </body>
 
