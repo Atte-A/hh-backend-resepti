@@ -112,24 +112,68 @@ public class ReseptiController {
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/muokkaa/{id}")
   public String naytaMuokkaaResepti(@PathVariable Long id, Model model) {
+
     Resepti resepti = reseptiRepo.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reseptiä ei löytynyt id:llä " + id));
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
     model.addAttribute("resepti", resepti);
-    return "muokkaaResepti";
+    model.addAttribute("ainesosat", ainesosaRepo.findAll());
+    model.addAttribute("tagit", tagRepo.findAll());
+
+    return "lisaaResepti";
   }
 
   // Tallentaa muokatun reseptin
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/muokkaa/{id}")
-  public String tallennaMuokattuResepti(@PathVariable Long id, @Valid Resepti resepti, BindingResult result,
+  public String tallennaMuokattuResepti(@PathVariable Long id,
+      @Valid Resepti resepti,
+      BindingResult result,
+      @RequestParam(required = false) List<Long> tagId,
       Model model) {
 
     if (result.hasErrors()) {
-      model.addAttribute("resepti", resepti);
-      return "muokkaaResepti";
+      model.addAttribute("ainesosat", ainesosaRepo.findAll());
+      model.addAttribute("tagit", tagRepo.findAll());
+      return "lisaaResepti";
     }
-    resepti.setReseptiId(id);
-    reseptiRepo.save(resepti);
+
+    Resepti existing = reseptiRepo.findById(id)
+        .orElseThrow();
+
+    // päivitä scalar fields
+    existing.setNimi(resepti.getNimi());
+    existing.setKuvaus(resepti.getKuvaus());
+    existing.setOhje(resepti.getOhje());
+    existing.setValmistusaika(resepti.getValmistusaika());
+    existing.setAnnosmaara(resepti.getAnnosmaara());
+
+    // clear + rebuild ainekset (yksinkertainen malli)
+    existing.getAinekset().clear();
+
+    for (ReseptiAines ra : resepti.getAinekset()) {
+      if (ra.getAinesosa() == null || ra.getAinesosa().getAinesosaId() == null)
+        continue;
+
+      Ainesosa a = ainesosaRepo.findById(ra.getAinesosa().getAinesosaId())
+          .orElseThrow();
+
+      ra.setAinesosa(a);
+      ra.setResepti(existing);
+      existing.getAinekset().add(ra);
+    }
+
+    // tags reset
+    existing.getTags().clear();
+
+    if (tagId != null) {
+      for (Tag t : tagRepo.findAllById(tagId)) {
+        existing.addTag(t);
+      }
+    }
+
+    reseptiRepo.save(existing);
+
     return "redirect:/reseptit/" + id;
   }
 
