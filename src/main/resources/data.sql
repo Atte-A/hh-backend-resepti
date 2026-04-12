@@ -1,9 +1,9 @@
 -- kayttajat
 INSERT INTO kayttaja (kayttajatunnus, salasana_hashed, rooli)
-VALUES ('admin', 'admin', 'ADMIN');
+VALUES ('admin', '$2a$12$OcgbOjhsqrX/xYweAl1X.Osh1b4gkEaqTI/Gm1I3wEWuvx5sKszm.', 'ADMIN');
 
 INSERT INTO kayttaja (kayttajatunnus, salasana_hashed, rooli)
-VALUES ('user', 'user', 'USER');
+VALUES ('user', '$2a$12$zvZQ4K9Fp9NYLwai7RTf..eZPM2zR6xiCHSY6PiuoJugrbEFVOln6', 'USER');
 
 -- tagit
 INSERT INTO tag (nimi) VALUES ('kasvis');
