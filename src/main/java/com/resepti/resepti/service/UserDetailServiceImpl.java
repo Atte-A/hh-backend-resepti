@@ -19,13 +19,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String kayttajatunnus) throws UsernameNotFoundException {
-      Kayttaja currUser = kayttajaRepo.findByKayttajatunnus(kayttajatunnus)
+      Kayttaja kayttaja = kayttajaRepo.findByKayttajatunnus(kayttajatunnus)
               .orElseThrow(() -> new UsernameNotFoundException("Käyttäjää " + kayttajatunnus + " ei löydy"));
 
       return new org.springframework.security.core.userdetails.User(
-              currUser.getKayttajatunnus(),
-              currUser.getSalasanaHashed(),
-              AuthorityUtils.createAuthorityList("ROLE_" + currUser.getRooli())
+              kayttaja.getKayttajatunnus(),
+              kayttaja.getSalasanaHashed(),
+              AuthorityUtils.createAuthorityList("ROLE_" + kayttaja.getRooli())
       );
     }
 }
