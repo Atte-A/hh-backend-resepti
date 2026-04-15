@@ -51,6 +51,12 @@ public class RestReseptiController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Resepti luoResepti(@Valid @RequestBody Resepti uusiResepti) {
+
+    // Yhdistä ainesosat uuteen reseptiin
+    if (uusiResepti.getAinekset() != null) {
+      uusiResepti.getAinekset().forEach(a -> a.setResepti(uusiResepti));
+    }
+
     return reseptiRepo.save(uusiResepti);
   }
 
@@ -59,6 +65,12 @@ public class RestReseptiController {
   @PutMapping("/{id}")
   public Resepti muokkaaResepti(@PathVariable Long id, @Valid @RequestBody Resepti muokattuResepti) {
     muokattuResepti.setReseptiId(id);
+    
+    // Yhdistää ainesosat muokattuun reseptiin
+    if (muokattuResepti.getAinekset() != null) {
+      muokattuResepti.getAinekset().forEach(a -> a.setResepti(muokattuResepti));
+    }
+
     return reseptiRepo.save(muokattuResepti);
   }
 
