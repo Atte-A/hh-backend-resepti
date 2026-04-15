@@ -23,7 +23,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/", "/login", "/css/**", "/h2-console/**").permitAll()
             .requestMatchers("/reseptit/lisaa", "/reseptit/muokkaa/**", "/reseptit/poista/**").hasRole("ADMIN")
-            .requestMatchers("/tagit", "/ainesosat").hasRole("ADMIN")
+            .requestMatchers("/tagit", "/tagit/**", "/ainesosat", "/ainesosat/**").hasRole("ADMIN")
             .requestMatchers("/api/**").authenticated()
             .anyRequest().authenticated())
         .formLogin(form -> form
