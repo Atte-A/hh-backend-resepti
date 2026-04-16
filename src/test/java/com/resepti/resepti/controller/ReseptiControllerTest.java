@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -23,9 +22,25 @@ class ReseptiControllerTest {
 
   @Test
   void haeReseptit_palauttaaOk() throws Exception {
-   mockMvc.perform(get("/api/reseptit")
+    mockMvc.perform(get("/api/reseptit")
         .with(csrf())
         .with(httpBasic("admin", "admin")))
-    .andExpect(status().isOk());
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void haeTagi_palauttaaOk() throws Exception {
+    mockMvc.perform(get("/api/tagit/1")
+        .with(csrf())
+        .with(httpBasic("admin", "admin")))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void haeAinesosat_palauttaaOk() throws Exception {
+    mockMvc.perform(get("/api/ainesosat")
+        .with(csrf())
+        .with(httpBasic("admin", "admin")))
+        .andExpect(status().isOk());
   }
 }
