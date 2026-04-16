@@ -49,6 +49,7 @@ public class AinesosaController {
   @PostMapping("/lisaa")
   public String luoUusiAinesosa(@Valid Ainesosa ainesosa, BindingResult result) {
 
+    // Tarkistetaan onko duplikaattia
     if (ainesosaRepo.findByNimi(ainesosa.getNimi()).isPresent()) {
     result.rejectValue("nimi", "error.ainesosa", "Ainesosa on jo olemassa");
     }
@@ -65,10 +66,13 @@ public class AinesosaController {
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/{id}")
   public String poistaAinesosa(@PathVariable Long id, Model model) {
+
+    // Puuttuva ainesosa
     if (!ainesosaRepo.existsById(id)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ainesosaa ei löytynyt id:llä " + id);
     }
 
+    // Tarkistetaan, onko ainesosa jonkin reseptin käytössä --> ei voi poistaa
     try {
     ainesosaRepo.deleteById(id);
     } catch (DataIntegrityViolationException e) {

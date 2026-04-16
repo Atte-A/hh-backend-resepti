@@ -39,7 +39,6 @@ public class DataInitializer implements CommandLineRunner {
   }
 
   // Käyttäjät
-
   private void seedKayttajat() {
     if (!kayttajaRepo.existsByKayttajatunnus("admin")) {
       kayttajaRepo.save(new Kayttaja(
@@ -57,8 +56,8 @@ public class DataInitializer implements CommandLineRunner {
   }
 
   // Ainesosat
-
   private Ainesosa haeTaiLisaaAinesosa(String nimi) {
+    // Haetaan ja luodaan puuttuvat
     return ainesosaRepo.findByNimi(nimi)
         .orElseGet(() -> ainesosaRepo.save(new Ainesosa(nimi)));
   }
@@ -72,13 +71,13 @@ public class DataInitializer implements CommandLineRunner {
         "vanilliinisokeri"
     };
 
+    // Käydään loopilla lista läpi ja lisätään puuttuvat
     for (String a : list) {
       haeTaiLisaaAinesosa(a);
     }
   }
 
   // Tagit
-
   private Tag haeTaiLisaaTagi(String nimi) {
     return tagRepo.findByNimi(nimi)
         .orElseGet(() -> tagRepo.save(new Tag(nimi)));
@@ -96,7 +95,6 @@ public class DataInitializer implements CommandLineRunner {
   }
 
   // Reseptit
-
   private void seedReseptit() {
 
     if (reseptiRepo.findByNimi("Pasta Cremosa").isEmpty()) {
@@ -106,8 +104,7 @@ public class DataInitializer implements CommandLineRunner {
           "Kermainen ja helppo pastaruoka",
           "Keitä pasta;Paista pekoni;Lisää kerma;Sekoita juusto;Mausta",
           25,
-          4
-      );
+          4);
 
       cremosa = reseptiRepo.save(cremosa);
 
@@ -125,8 +122,7 @@ public class DataInitializer implements CommandLineRunner {
           "Perinteinen uunipannari",
           "Sekoita taikina;Kaada pellille;Paista uunissa",
           45,
-          5
-      );
+          5);
 
       pannukakku = reseptiRepo.save(pannukakku);
 
@@ -138,19 +134,21 @@ public class DataInitializer implements CommandLineRunner {
   }
 
   // ReseptiAinekset
-
   private void seedReseptiAinekset() {
 
+    // Jos taulussa on jo resepti_ainekset, ei tehdä mitään
     if (reseptiAinesRepo.count() > 0) {
       return;
     }
-
+    
+    // Haetaan reseptit
     Resepti cremosa = reseptiRepo.findByNimi("Pasta Cremosa")
         .orElseThrow();
 
     Resepti pannukakku = reseptiRepo.findByNimi("Pannukakku")
         .orElseThrow();
 
+    // Haetaan ja lisätään puuttuvat ainesosat
     Ainesosa pasta = haeTaiLisaaAinesosa("pasta");
     Ainesosa pekoni = haeTaiLisaaAinesosa("pekoni");
     Ainesosa kerma = haeTaiLisaaAinesosa("kerma");
@@ -161,6 +159,7 @@ public class DataInitializer implements CommandLineRunner {
     Ainesosa sokeri = haeTaiLisaaAinesosa("sokeri");
     Ainesosa kananmuna = haeTaiLisaaAinesosa("kananmuna");
 
+    // Tallennetaan resepti_ainekset reseptiin
     reseptiAinesRepo.save(new ReseptiAines(cremosa, pasta, 1, "pkt"));
     reseptiAinesRepo.save(new ReseptiAines(cremosa, pekoni, 150, "g"));
     reseptiAinesRepo.save(new ReseptiAines(cremosa, kerma, 2, "dl"));

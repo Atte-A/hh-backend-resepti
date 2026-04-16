@@ -43,6 +43,7 @@ public class RestReseptiAinesController {
   @GetMapping
   public List<ReseptiAines> haeAinekset(@PathVariable Long reseptiId) {
 
+    // Tarkistaa löytyykö reseptä
     Resepti resepti = reseptiRepo.findById(reseptiId)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
             "Reseptiä ei löytynyt resepti_id:llä " + reseptiId));
@@ -56,6 +57,7 @@ public class RestReseptiAinesController {
   @ResponseStatus(HttpStatus.CREATED)
   public ReseptiAines lisaaReseptiAines(@PathVariable Long reseptiId, @RequestBody ReseptiAinesDTO request) {
 
+    // Tarkistetaan että resepti ja ainesosa ovat olemassa
     Resepti resepti = reseptiRepo.findById(reseptiId)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
             "Reseptiä ei löytynyt resepti_id:llä " + reseptiId));
@@ -74,10 +76,12 @@ public class RestReseptiAinesController {
   public ReseptiAines muokkaaReseptiAines(@PathVariable Long reseptiId, @PathVariable Long ainesosaId,
       @RequestBody ReseptiAinesDTO request) {
 
+    // Haetaan muokattava resepti_aines
     ReseptiAines muokattava = reseptiAinesosaRepo
         .findByResepti_ReseptiIdAndAinesosa_AinesosaId(reseptiId, ainesosaId)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"ReseptiAinesta ei löytynyt"));
 
+    // Asetetaan ainesosan määrä ja yksikkö
     muokattava.setMaara(request.getMaara());
     muokattava.setYksikko(request.getYksikko());
 
@@ -89,6 +93,7 @@ public class RestReseptiAinesController {
   @DeleteMapping("/{ainesosaId}")
   public void poistaReseptiAines(@PathVariable Long reseptiId, @PathVariable Long ainesosaId) {
     
+    // Tarkistetaan, että poistettava resepti_aines on löytyy
     ReseptiAines poistettava = reseptiAinesosaRepo.findByResepti_ReseptiIdAndAinesosa_AinesosaId(reseptiId, ainesosaId)
     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ReseptiAinesta ei löytynyt"));
     

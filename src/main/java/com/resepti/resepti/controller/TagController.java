@@ -46,10 +46,13 @@ public class TagController {
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/lisaa")
   public String luoUusiTag(@Valid Tag tag, BindingResult result) {
+
+    // Tarkistus duplikaattien varalta
     if (tagRepo.findByNimi(tag.getNimi()).isPresent()) {
       result.rejectValue("nimi", "error.tag", "Tagi on jo olemassa");
     }
 
+    // Virhetilanteessa palataan takaisin lisaaTagi.html-sivulle
     if (result.hasErrors()) {
       return "lisaaTagi";
     }
@@ -62,10 +65,13 @@ public class TagController {
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/{id}")
   public String poistaTagi(@PathVariable Long id, Model model) {
+
+    // Tarkistetaan onko poistettava tagi olemassa
     if (!tagRepo.existsById(id)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tagia ei löytynyt id:llä " + id);
     }
 
+    // Poistaminen ei onnistu, jos tagi on käytössä jossakin reseptissä
     try {
       tagRepo.deleteById(id);
     } catch (DataIntegrityViolationException e) {

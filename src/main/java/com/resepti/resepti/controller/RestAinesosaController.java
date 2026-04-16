@@ -55,6 +55,8 @@ public class RestAinesosaController {
   @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/{id}")
   public Ainesosa muokkaaAinesosa(@PathVariable Long id, @RequestBody Ainesosa muokattuAinesosa) {
+
+    // Tarkistus, löytyykö ainesosa
     ainesosaRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aineosaa ei lötynyt id:llä " + id));
     muokattuAinesosa.setAinesosaId(id);
     return ainesosaRepo.save(muokattuAinesosa);
@@ -65,6 +67,8 @@ public class RestAinesosaController {
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void poistaAinesosa(@PathVariable Long id) {
+
+    // Tarkistus, löytyykö poistettava ainesosa
     ainesosaRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ainesosaa ei löytynyt id:llä " + id));
     ainesosaRepo.deleteById(id);
   }

@@ -19,9 +19,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String kayttajatunnus) throws UsernameNotFoundException {
+
+      // Tarkistetaan, että käyttäjä on olemassa
       Kayttaja kayttaja = kayttajaRepo.findByKayttajatunnus(kayttajatunnus)
               .orElseThrow(() -> new UsernameNotFoundException("Käyttäjää " + kayttajatunnus + " ei löydy"));
 
+      // Muunnetaan käyttäjä Spring Security User-objektiksi
       return new org.springframework.security.core.userdetails.User(
               kayttaja.getKayttajatunnus(),
               kayttaja.getSalasanaHashed(),
