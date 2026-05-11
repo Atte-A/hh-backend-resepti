@@ -3,6 +3,9 @@
 Resepti App is a full-stack CRUD web application for managing recipes, designed for home chefs and cooking enthusiasts.    
 It is built with Java Spring Boot, Spring Security, Thymeleaf, Bootstrap and PostgreSQL.
 
+👉 [Live App](https://hh-backend-resepti.onrender.com/)  
+
+
 ## 🧠 Why I built this
 
 I built Resepti App to deepen my knowledge of the Spring ecosystem and relational database design with PostgreSQL.
